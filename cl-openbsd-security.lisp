@@ -57,9 +57,10 @@
 (defun interpret-result (c-result-code &optional (call "last security"))
   (if (zerop c-result-code)
     t
-    (let
-      ;;  TODO proper reason retreiving from errno
-      ((detail-reason (format nil "~a call failed" call)))
+    (let*
+      ((errno (mem-ref (foreign-funcall "__errno" (:pointer :int)) :int))
+       (error-message (foreign-funcall "strerror" :int errno :string))
+       (detail-reason (format nil "~a call failed - ~a" call error-message)))
       (cerror
         (format nil "Continue while ignoring that ~a" detail-reason)
         'runtime-security-condition
@@ -151,6 +152,7 @@
 (foreign-symbol-pointer "pledge")
 
 (pledge stdio rpath wpath cpath dpath tmppath inet mcast fattr chown flock unix dns getpw sendfd recvfd tape tty proc exec prot_exec settime ps vminfo id pf audio video bpf unveil)
+
 
 ;; CLISP OK
 (pledge stdio rpath wpath cpath dpath tmppath inet mcast flock unix getpw sendfd recvfd tty proc exec prot_exec ps vminfo id unveil)
