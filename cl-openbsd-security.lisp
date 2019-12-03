@@ -152,16 +152,42 @@
 
 (pledge stdio rpath wpath cpath dpath tmppath inet mcast fattr chown flock unix dns getpw sendfd recvfd tape tty proc exec prot_exec settime ps vminfo id pf audio video bpf unveil)
 
+;; CLISP OK
+(pledge stdio rpath wpath cpath dpath tmppath inet mcast flock unix getpw sendfd recvfd tty proc exec prot_exec ps vminfo id unveil)
+
+;; CLISP OK
+(pledge stdio inet mcast flock unix getpw sendfd recvfd tty proc exec prot_exec ps vminfo id unveil)
+
+
+;; CLISP OK
+(pledge stdio mcast flock unix getpw sendfd recvfd tty proc exec prot_exec ps vminfo id)
+
+
+;; CLISP OK
+(pledge stdio mcast flock unix getpw tty proc exec prot_exec ps vminfo id)
+
+;; CLISP OK
+(pledge stdio mcast flock unix getpw tty proc exec prot_exec)
+
+;; CLISP OK
+(pledge stdio mcast flock unix proc tty exec prot_exec)
+
+
+;; CLISP OK - MINIMAL CLISP PROMISSES
+(pledge stdio tty)
+
+
 
 
 (pledge stdio rpath wpath cpath dpath tmppath inet prot_exec)
+
 (pledge blbost)
 
 
 (macroexpand
   '(pledge (stdio rpath) (stdio wpath)))
 
-(pledge stdio cpath exec havran debil vajicko)
+(pledge stdio rpath exec exec-prot)
 
 (pledge blbost)
 
@@ -185,13 +211,13 @@
 
 (unveil-raw "/home/jajis" "rw")
 
-(unveil #p"/tmp" 'r)
+(unveil #p"/tmp/" 'r)
 
 (uiop:directory-files "./")
 
-(uiop:directory-files "/tmp")
+(uiop:directory-files "/tmp/")
 
-(uiop:subdirectories "/tmp")
+(uiop:subdirectories "/home")
 
 
 (type-of (first (uiop:directory-files "/home/jajis/projects")))
