@@ -26,4 +26,10 @@ Not on quicklisp (yet?).
 ## Limitations
 
 * Obviously only usable on OpenBSD. Will fail on any other OS. If you want to use this opportunistically, detect OS before use.
-* So far tested only with SBCL
+* Works with all common lisp implementations available in OpenBSD ports for
+  amd64:
+  - SBCL
+  - ECL
+  - CLISP
+  - ABCL (`pkg-add -i jna` before use or otherwise get jna on classpath)
+  _of course the minimal set of pledges differs on different implementations_
