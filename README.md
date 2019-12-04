@@ -8,14 +8,14 @@ Makes it easier to call pledge and unveil in a lispier way:
 
 (obsd:pledge (stdio exec prot-exec xpath) (stdio wpath)) ;; for promisses and execpromisses
 
-(obsd:unveil #p"/tmp" 'rwc)
+(obsd:unveil #p"/tmp" rwc)
 ```
 
 Signals compile time errors when you make a typo
 ```
 (obsd:pledge executive nonsense) ;; does not compile
 
-(obsd:unveil #p"/home/me" 'read) ;; does not run
+(obsd:unveil #p"/home/me" read) ;; does not compile either
 ```
 
 ## Install
