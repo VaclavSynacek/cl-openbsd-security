@@ -120,12 +120,9 @@
   (path :string)
   (permissions :string))
 
-(defun unveil (path permissions)
+(defun permissions-to-valid-string (permissions)
   (let
-    ((string-path (ctypecase path
-                    (string path)
-                    (pathname (namestring path))))
-     (string-permissions (ctypecase permissions
+    ((string-permissions (ctypecase permissions
                            (string permissions)
                            (symbol (format nil
                                       "~(~a~)"
@@ -143,6 +140,14 @@
                        (coerce string-permissions 'list)
                        (list #\r #\w #\x #\c)
                        :test #'equal))))
+    string-permissions))
+
+(defun unveil (path permissions)
+  (let
+    ((string-path (ctypecase path
+                    (string path)
+                    (pathname (namestring path))))
+     (string-permissions (permissions-to-valid-string permissions)))
     (interpret-result
       (unveil-raw string-path string-permissions)
       "unveil")))
@@ -211,7 +216,7 @@
 
 (pledge-raw "stdio rpath wpath cpath dpath exec proc sendfd recvfd unix fattr" "unix fattr sendfd recvfd stdio rpath wpath cpath dpath exec proc")
 
-(unveil-raw "/home/jajis" "rw")
+(unveil-raw "/home" "rw")
 
 (unveil #p"/tmp/" 'r)
 
