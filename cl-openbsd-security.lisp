@@ -142,15 +142,19 @@
                        :test #'equal))))
     string-permissions))
 
-(defun unveil (path permissions)
+(defmacro unveil (path permissions)
   (let
-    ((string-path (ctypecase path
-                    (string path)
-                    (pathname (namestring path))))
-     (string-permissions (permissions-to-valid-string permissions)))
-    (interpret-result
-      (unveil-raw string-path string-permissions)
-      "unveil")))
+    ((string-permissions (permissions-to-valid-string permissions))
+     (orig-path (gensym))
+     (string-path (gensym)))
+    `(let*
+       ((,orig-path ,path)
+        (,string-path (ctypecase ,orig-path
+                        (string ,orig-path)
+                        (pathname (namestring ,orig-path)))))
+       (interpret-result
+         (unveil-raw ,string-path ,string-permissions)
+         "unveil"))))
 
 #|
 
@@ -218,7 +222,7 @@
 
 (unveil-raw "/home" "rw")
 
-(unveil #p"/tmp/" 'r)
+(unveil (concatenate 'string "/tmp/" "file") rw)
 
 (uiop:directory-files "./")
 
