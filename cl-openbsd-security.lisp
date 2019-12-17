@@ -158,6 +158,25 @@
 
 #|
 
+(uiop:run-program "sbcl 
+                        --eval \"(asdf:make :cl-openbsd-security)\""
+                  :ignore-error-status t
+                  :output :string
+                  :force-shell nil
+                  :input (make-string-input-stream
+                           "
+                            (asdf:make :cl-openbsd-security)
+                            ;;(obsd:pledge unix)
+                            (obsd:pledge stdio rpath wpath cpath dpath tmppath inet mcast fattr chown flock unix dns getpw sendfd recvfd tape tty proc exec prot_exec settime ps vminfo id pf audio video bpf unveil)
+                            (progn
+                              (princ \"we got past pledge\")
+                              ;;(sb-ext:exit :code 5)
+                              (quit))
+                           "))
+                  
+
+(prin1 '(print "bla"))
+
 (foreign-symbol-pointer "pledge")
 
 (pledge stdio rpath wpath cpath dpath tmppath inet mcast fattr chown flock unix dns getpw sendfd recvfd tape tty proc exec prot_exec settime ps vminfo id pf audio video bpf unveil)
@@ -221,6 +240,8 @@
 (pledge-raw "stdio rpath wpath cpath dpath exec proc sendfd recvfd unix fattr" "unix fattr sendfd recvfd stdio rpath wpath cpath dpath exec proc")
 
 (unveil-raw "/home" "rw")
+
+(macroexpand '(unveil (concatenate 'string "/tmp/" "file") rw))
 
 (unveil (concatenate 'string "/tmp/" "file") rw)
 
