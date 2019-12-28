@@ -14,6 +14,8 @@
  | OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  |#
 
+(ql:quickload :cffi)
+
 (defpackage :cl-openbsd-security
   (:nicknames :openbsd :obsd)
   (:use :common-lisp :cffi)
