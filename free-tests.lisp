@@ -52,3 +52,27 @@
   "(format t \"Hooray~%\")"
   '(rpath)
   '())
+
+
+(defun get-minimal-pledge (cl-string program-string)
+  (let
+    ((to-test cl-openbsd-security::pledges)
+     (required (list)))
+    (dolist (p to-test)
+      (unless (test-program-with-pledge
+                cl-string
+                program-string
+                (remove p to-test)
+                '())
+        (push p required)))
+    required))
+
+
+(get-minimal-pledge
+  "sbcl"
+  "(with-open-file (f \"/tmp/file.f\"
+                       :direction :output
+                       :if-exists :supersede
+                       :if-does-not-exist :create)
+     (format f \"write anything ~a ~%\" (random 100)))
+   (delete-file \"/tmp/file.f\")")  
