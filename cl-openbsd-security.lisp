@@ -42,7 +42,7 @@
   (:report (lambda (condition stream)
              (format stream "Some OpenBSD security mitigation failed.
   You probably can continue, but some of the security guarantees will not be honored.
-  The datail is: ~a~%" (message condition))))
+  The detail is: ~a~%" (message condition))))
   (:documentation "Runtime condition for the :cl-openbsd-security package. Used
                   when runtime call to pledge(2) or unveil(2) fails."))
 
@@ -51,7 +51,7 @@
     :reader message))
   (:report (lambda (condition stream)
              (format stream "Cannot compile cl-openbsd-security macro.
-  The datail is: ~a~%" (message condition))))
+  The detail is: ~a~%" (message condition))))
   (:documentation "Compile-time condition for the :cl-openbsd-security package. Used
                   when  pledge(2) or unveil(2) is poorly defined or has typos."))
 
@@ -67,7 +67,7 @@
         (format nil "Continue while ignoring that ~a" detail-reason)
         'runtime-security-condition
         :message detail-reason))))
-   
+
 
 (defcfun (pledge-raw "pledge") :int
   "Restrict system operations to promises."
