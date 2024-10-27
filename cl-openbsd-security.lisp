@@ -40,7 +40,7 @@
   ((message :initarg :message
     :reader message))
   (:report (lambda (condition stream)
-             (format stream "Some OpenBSD security mitigation failed.
+             (format stream "Some OpenBSD security mitigations failed.
   You probably can continue, but some of the security guarantees will not be honored.
   The detail is: ~a~%" (message condition))))
   (:documentation "Runtime condition for the :cl-openbsd-security package. Used
@@ -53,7 +53,7 @@
              (format stream "Cannot compile cl-openbsd-security macro.
   The detail is: ~a~%" (message condition))))
   (:documentation "Compile-time condition for the :cl-openbsd-security package. Used
-                  when  pledge(2) or unveil(2) is poorly defined or has typos."))
+                  when pledge(2) or unveil(2) is poorly defined or has typos."))
 
 
 (defun interpret-result (c-result-code &optional (call "last security"))
@@ -93,7 +93,7 @@
               'security-compilation-error
               :message
               (format nil
-                      "tryng to pladge invalid promisses: ~{~a~^, ~}"
+                      "trying to pledge invalid promisses: ~{~a~^, ~}"
                       (set-difference formated-strings pledges :test #'equal))))
     (format nil "~{~a~^ ~}" formated-strings)))
 
@@ -137,7 +137,7 @@
              'security-compilation-error
              :message
              (format nil
-                     "tryng to unveil with invalid rigths ~{~a~^, ~}"
+                     "trying to unveil with invalid rights ~{~a~^, ~}"
                      (set-difference
                        (coerce string-permissions 'list)
                        (list #\r #\w #\x #\c)
